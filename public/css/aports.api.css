@@ -1,0 +1,41 @@
+ 
+table.packages {
+  border: 1px solid black;
+  margin: 5px 0px;
+  width: 98%;
+}
+
+table.packages th,
+table.packages td
+{
+  border: 1px solid black;
+  padding: 5px;
+}
+
+table.packages td:first-child,
+table.packages td:nth-child(2)
+{
+  white-space: nowrap;
+}
+table.packages tr:nth-child(odd) { background-color: #f3f3f3; }
+table.packages tr:nth-child(even) {  }
+
+table.packages tr:first-child {
+  background-color: #e3e3e3;
+}
+
+div.form-group {
+  float: left;
+  margin: 0px 2px;
+}
+#search button {
+}
+
+#api-active-pager {
+  text-align: center;
+}
+#api-active-pager .pagination {
+  margin: 4px auto;
+}
+
+
