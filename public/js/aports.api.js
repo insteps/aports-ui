@@ -34,13 +34,6 @@ for (a in config.api.resources) {
 }
 temp = {}
 
-//alert(app.query);
-//url=config.api.baseurl+'/search/packages&name=oniguruma&branch=edge&repo=testing&arch=armhf';
-//url = (typeof app.url[1] != 'undefined') ? config.api.baseurl+app.url[1] : app.urlDef;
-//url = config.api.baseurl+''+app.resource+''+app.query;
-//alert(url);
-//exit;
-
     asyncReq = function(url, callback, callback2) {
 	  var request = $.ajax({
 	      url : url,
