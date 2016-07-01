@@ -105,8 +105,8 @@
        $( html ).appendTo( "body #search" );
     };
 
-    app.query = (app.query) ? '&'+app.query : ''
-    url = config.api.baseurl+''+app.resource+''+app.query;
+    query = (app.query) ? '&'+app.query : ''
+    url = config.api.baseurl+''+app.resource+''+query;
     asyncReq(url, 'callback', get_packages);
 
     url=config.api.baseurl+'/categories';

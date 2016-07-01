@@ -100,7 +100,8 @@ temp = {}
             prev: '&lt;',      next: '&gt;',
             first: '&lt;&lt;', last: '&gt;&gt;',
             onPageClick: function(event, page) {
-              var url = app.baseurl+'?'+app.query+'&page='+page;
+              var query = (app.query !== '') ? '?'+app.query+'&' : '?';
+              var url = app.baseurl+query+'page='+page;
               window.location = url;
             }
           });
