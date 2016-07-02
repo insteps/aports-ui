@@ -1,7 +1,17 @@
+/*<![CDATA[*/
+
+/**
+ * Copyright (c) 2016 V.Krishn (vkrishn@insteps.net)
+ *
+ * This file is part of "Aports UI";
+ * ----
+ *
+ *
+ */
 
    getPackage = function(data) {
        //----- data.data -----
-       var d = data.data[0]; var d_ = d['attributes'];
+       var d = data.data[0]; var d_ = d['attributes']; var ln = '';
        var name = d['attributes']['name'];
        var version = d['attributes']['version'];
        var repo = d['attributes']['repo'];
@@ -9,18 +19,21 @@
        var branch = d['attributes']['branch'];
        var items = [];
        
+       ln = 'http://git.alpinelinux.org/cgit/aports/tree';
        var gr = (makeElm('a', 'Git repository', {
-         'href': 'http://git.alpinelinux.org/cgit/aports/tree/'+repo+'/'+name+'?h=master'
+         'href': ln+'/'+repo+'/'+name+'?h=master'
        }));
        d['attributes']['git_repository'] = gr;
        
+       ln = 'http://build.alpinelinux.org/buildlogs';
        var bl = (makeElm('a', 'Bluid log', {
-         'href': 'http://build.alpinelinux.org/buildlogs/build-'+branch+'-'+arch+'/'+repo+'/'+name+'/'+name+'-'+version+'.log'
+         'href': ln+'/'+'build-'+branch+'-'+arch+'/'+repo+'/'+name+'/'+name+'-'+version+'.log'
        }));
        d['attributes']['build_log'] = bl;
        
+       ln = 'http://pkgs.alpinelinux.org/contents';
        var ct = (makeElm('a', 'Contents of package', {
-         'href': 'http://pkgs.alpinelinux.org/contents?branch='+branch+'&name='+name+'&arch='+arch+'&repo='+repo+''
+         'href': ln+'?branch='+branch+'&name='+name+'&arch='+arch+'&repo='+repo+''
        }));
        d['attributes']['contents'] = ct;
        
@@ -67,5 +80,7 @@
     _getPackage(url);
 
 
+
+/*]]>*/
 
 

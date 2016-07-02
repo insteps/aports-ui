@@ -1,4 +1,13 @@
+/*<![CDATA[*/
 
+/**
+ * Copyright (c) 2016 V.Krishn (vkrishn@insteps.net)
+ *
+ * This file is part of "Aports UI";
+ * ----
+ *
+ *
+ */
 
     get_packages = function(data) {
        //----- data.data -----
@@ -116,6 +125,7 @@
     asyncReq(url, 'callback', get_maintainers);
 
 
-    
-    
-    
+
+/*]]>*/
+
+

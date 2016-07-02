@@ -1,3 +1,13 @@
+/*<![CDATA[*/
+
+/**
+ * Copyright (c) 2016 V.Krishn (vkrishn@insteps.net)
+ *
+ * This file is part of "Aports UI";
+ * ----
+ *
+ *
+ */
 
 config = {}
 config.api = {}
@@ -163,4 +173,7 @@ temp = {}
     }
 
 
-   
+
+/*]]>*/
+
+
