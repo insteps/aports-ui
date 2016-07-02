@@ -5,12 +5,12 @@ config.api.baseurl = 'http://api.alpinelinux.org/index.php?_url='
 config.api.resources = ['packages', 'contents', 'categories', 
                         'origins', 'flagged', 'depends',
                         'install_if', 'provides', 'maintainer'];
-package = {};
-package.tblHdrs = ['Package', 'Version', 'Project', 'License', 'Branch',
+packages = {};
+packages.tblHdrs = ['Package', 'Version', 'Project', 'License', 'Branch',
                    'Repository', 'Architecture', 'Maintainer', 'Build date'];
-package.fields = ['name', 'version', 'url', 'license', 'branch',
+packages.fields = ['name', 'version', 'url', 'license', 'branch',
                    'repo', 'arch', 'maintainer', 'build_time'];
-package.class = 'packages';
+packages.class = 'packages';
 
 meta = {};
 meta.stats = ['count', 'total-pages', 'per-page', 'total-count',
@@ -56,7 +56,7 @@ temp = {}
           var u_ = []; //['packages']
           var v_ = { 'name':  data[field], 'branch': data['branch'],
                      'arch': data['arch'], 'repo': data['repo'] };
-          var url_ = app.baseurl.replace(/packages/, 'package') + '?' + buildReq(u_, v_, package.fields);
+          var url_ = app.baseurl.replace(/packages/, 'package') + '?' + buildReq(u_, v_, packages.fields);
           return makeElm( 'a', data[field], {'title':data['description'], 'href':url_} );
         }
         if('version' == field) {
@@ -71,7 +71,7 @@ temp = {}
           var u_ = [''];
           var v_ = { 'name':  data[field], 'branch': data['branch'],
                      'arch': data['arch'], 'repo': data['repo'] };
-          var url_ = app.baseurl + '?' + buildReq(u_, v_, package.fields);
+          var url_ = app.baseurl + '?' + buildReq(u_, v_, packages.fields);
           return makeElm( 'a', data[field], {'title':'', 'href':url_} )
         }
       }

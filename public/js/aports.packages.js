@@ -3,9 +3,9 @@
     get_packages = function(data) {
        //----- data.data -----
        var items = [];
-       var h = getTblRow('', package.tblHdrs, 'data', 'th', 'tr');
+       var h = getTblRow('', packages.tblHdrs, 'data', 'th', 'tr');
        $.each( data.data, function( key, val ) {
-         items.push( getTblRow(val['attributes'], package.fields, 'data', 'td', 'tr') );
+         items.push( getTblRow(val['attributes'], packages.fields, 'data', 'td', 'tr') );
        });
        var tbl = "\n" + h + "\n" + items.join( "\n" );
        $( "<table/>", {
