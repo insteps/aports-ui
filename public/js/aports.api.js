@@ -45,56 +45,56 @@ for (a in config.api.resources) {
 temp = {}
 
     asyncReq = function(url, callback, callback2) {
-	  var request = $.ajax({
-	      url : url,
-	      xhrFields: {
-	        withCredentials: true
-	      },
-	      method: 'GET',
-	      cache: true,
-	      dataType: "jsonp", //CORS
-	      jsonp: callback, // defaults to 'callback'
-	      success: callback2
-	  });
-	  return request;
-	}
+        var request = $.ajax({
+            url : url,
+            xhrFields: {
+              withCredentials: true
+            },
+            method: 'GET',
+            cache: true,
+            dataType: "jsonp", //CORS
+            jsonp: callback, // defaults to 'callback'
+            success: callback2
+        });
+        return request;
+    }
 
     fmtData = function(data, field, type) {
-      if(data[field] == null) return '';
-      if('data' == type) {
-        if('name' == field) {
-          var u_ = []; //['packages']
-          var v_ = { 'name':  data[field], 'branch': data['branch'],
-                     'arch': data['arch'], 'repo': data['repo'] };
-          var url_ = app.baseurl.replace(/packages/, 'package') + '?' + buildReq(u_, v_, packages.fields);
-          return makeElm( 'a', data[field], {'title':data['description'], 'href':url_} );
+        if(data[field] == null) return '';
+        if('data' == type) {
+            if('name' == field) {
+                var u_ = []; //['packages']
+                var v_ = { 'name':  data[field], 'branch': data['branch'],
+                           'arch': data['arch'], 'repo': data['repo'] };
+                var url_ = app.baseurl.replace(/packages/, 'package') + '?' + buildReq(u_, v_, packages.fields);
+                return makeElm( 'a', data[field], {'title':data['description'], 'href':url_} );
+            }
+            if('version' == field) {
+                return makeElm( 'a', data[field], {'title':'Flag this package out of date', 'href':''} );
+            }
+            if('url' == field) {
+                return makeElm( 'a', 'URL', {'title':'', 'href':data[field]} )
+            }
+            if('build_time' == field) { return fmtDate(data[field], "yyyy-mm-dd HH:MM:ss") }
+            if('maintainer' == field) { return data[field].split(/\</)[0] }
+            if('origin' == field) {
+                var u_ = [''];
+                var v_ = { 'name':  data[field], 'branch': data['branch'],
+                           'arch': data['arch'], 'repo': data['repo'] };
+                var url_ = app.baseurl + '?' + buildReq(u_, v_, packages.fields);
+                return makeElm( 'a', data[field], {'title':'', 'href':url_} )
+            }
         }
-        if('version' == field) {
-          return makeElm( 'a', data[field], {'title':'Flag this package out of date', 'href':''} );
+        if('meta' == type) {
         }
-        if('url' == field) {
-          return makeElm( 'a', 'URL', {'title':'', 'href':data[field]} )
+        if('links' == type) {
+            var text = field;
+            //if ('last' == field) { text = '&gt;&gt;' }
+            //if ('next' == field) { text = '&gt;' }
+            //if ('first' == field) { text = '&lt;&lt;' }
+            return '<a title="'+'" href="'+data[field]+'">'+text+'</a>'
         }
-        if('build_time' == field) { return fmtDate(data[field], "yyyy-mm-dd HH:MM:ss") }
-        if('maintainer' == field) { return data[field].split(/\</)[0] }
-        if('origin' == field) {
-          var u_ = [''];
-          var v_ = { 'name':  data[field], 'branch': data['branch'],
-                     'arch': data['arch'], 'repo': data['repo'] };
-          var url_ = app.baseurl + '?' + buildReq(u_, v_, packages.fields);
-          return makeElm( 'a', data[field], {'title':'', 'href':url_} )
-        }
-      }
-      if('meta' == type) {
-      }
-      if('links' == type) {
-        var text = field;
-        //if ('last' == field) { text = '&gt;&gt;' }
-        //if ('next' == field) { text = '&gt;' }
-        //if ('first' == field) { text = '&lt;&lt;' }
-        return '<a title="'+'" href="'+data[field]+'">'+text+'</a>'
-      }
-      return data[field];
+        return data[field];
     };
 
     makePgn = function(data) {
@@ -104,17 +104,17 @@ temp = {}
         app.query = (app.query).split(/\&page.*/)[0];
         pgr = $('#api-active-pager');
         setTimeout(function() {
-          $(pgr).twbsPagination({
-            startPage: (currPg <= data.meta['total-pages']) ? currPg : 1,
-            totalPages: (pgs) ? pgs : 1,   visiblePages: 4,
-            prev: '&lt;',      next: '&gt;',
-            first: '&lt;&lt;', last: '&gt;&gt;',
-            onPageClick: function(event, page) {
-              var query = (app.query !== '') ? '?'+app.query+'&' : '?';
-              var url = app.baseurl+query+'page='+page;
-              window.location = url;
-            }
-          });
+            $(pgr).twbsPagination({
+                startPage: (currPg <= data.meta['total-pages']) ? currPg : 1,
+                totalPages: (pgs) ? pgs : 1,   visiblePages: 4,
+                prev: '&lt;',      next: '&gt;',
+                first: '&lt;&lt;', last: '&gt;&gt;',
+                onPageClick: function(event, page) {
+                  var query = (app.query !== '') ? '?'+app.query+'&' : '?';
+                  var url = app.baseurl+query+'page='+page;
+                  window.location = url;
+                }
+            });
         }, 600);
     }
 
@@ -122,9 +122,9 @@ temp = {}
        var items = [];
        for(n in fields) {
            if(data) {
-             val = (data[fields[n]]) ? fmtData(data, fields[n], cls) : '';
+               val = (data[fields[n]]) ? fmtData(data, fields[n], cls) : '';
            } else {
-             val = fields[n];
+               val = fields[n];
            }
            if(elm) items.push(makeElm(elm, val, {}));
        }
@@ -137,39 +137,39 @@ temp = {}
         var a_ = [];
         a_.push('<'+elm);
         if (typeof attr == 'object') {
-          for (a in attr) { a_.push(a+"='"+attr[a]+"'") }
+            for (a in attr) { a_.push(a+"='"+attr[a]+"'") }
         }
         if('img' == elm) {
-          a_.push(' />'); var end_ = '';
+            a_.push(' />'); var end_ = '';
         } else {
-          a_.push('>'); var end_ = '</'+elm+'>';
+            a_.push('>'); var end_ = '</'+elm+'>';
         }
         return a_.join(' ')+val+end_;
     };
 
     buildReq = function(resource, reqs, fields) {
-      var url_ = resource.join('/');
-      var items = [];
-      for(var i=0; i<fields.length; i++) {
-        o = fields[i];
-        if(reqs[o]) { items.push(o+'='+reqs[o]); }
-      }
-      var req_ = items.join("&");
-      url_ = (url_) ? url_+'&' : '';
-      return url_+req_;
+        var url_ = resource.join('/');
+        var items = [];
+        for(var i=0; i<fields.length; i++) {
+            o = fields[i];
+            if(reqs[o]) { items.push(o+'='+reqs[o]); }
+        }
+        var req_ = items.join("&");
+        url_ = (url_) ? url_+'&' : '';
+        return url_+req_;
     }
 
     fmtDate = function(epoch, fmt) {
-      fmt = fmt ? fmt : "ddd, mmm dS, yyyy, h:MM TT";
-      now = new Date();
-      var mEpoch = parseInt(epoch);
-      if(mEpoch < 10000000000) { mEpoch *= 1000; }
-      now.setTime(mEpoch);
-      return dateFormat(now, fmt);
+        fmt = fmt ? fmt : "ddd, mmm dS, yyyy, h:MM TT";
+        now = new Date();
+        var mEpoch = parseInt(epoch);
+        if(mEpoch < 10000000000) { mEpoch *= 1000; }
+        now.setTime(mEpoch);
+        return dateFormat(now, fmt);
     };
    
     titleCase = function(string) {
-      if(string) return string.charAt(0).toUpperCase() + string.slice(1);
+        if(string) return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
 
