@@ -27,6 +27,8 @@
                 var url_ = app.baseurl + '?' + buildReq(u_, v_, packages.fields);
                 return makeElm( 'a', data[field], {'title':'', 'href':url_} )
             }
+            if('size' == field) { return humanBytes(data[field]) }
+            if('installed_size' == field) { return humanBytes(data[field]) }
         }
         return data[field];
     };
