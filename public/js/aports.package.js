@@ -33,7 +33,7 @@
         return data[field];
     };
 
-    getPackage = function(data) {
+    setPackage = function(data) {
         //----- data.data -----
         var d = data.data[0]; var d_ = d['attributes'];
         var name = d_['name'];
@@ -96,7 +96,7 @@
         var p = new Poly9.URLParser(url);
         var q = p.getQueryarray();
         if( ! q['name'] ) { $('<span>no data</span>').appendTo( "body .container" ); return; };
-        asyncReq(url, 'callback', getPackage);
+        asyncReq(url, 'callback', setPackage);
     };
 
     app.query = (app.query) ? '&'+app.query : '';

@@ -122,7 +122,7 @@ temp = {}
         }, 600);
     }
 
-    getTblRow = function(data, fields, cls, elm, elmWrap) {
+    makeTblRow = function(data, fields, cls, elm, elmWrap) {
        var items = [];
        for(n in fields) {
            if(data) {

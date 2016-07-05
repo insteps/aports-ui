@@ -9,19 +9,19 @@
  *
  */
 
-    get_packages = function(data) {
+    set_packages = function(data) {
         //----- data.data -----
         var items = []; var fids = [];
-        var h = getTblRow('', packages.tblHdrs, 'data', 'th', 'tr');
+        var h = makeTblRow('', packages.tblHdrs, 'data', 'th', 'tr');
         $.each( data.data, function( key, val ) {
-          items.push(getTblRow(val['attributes'], packages.fields, 'data', 'td', 'tr'));
+          items.push(makeTblRow(val['attributes'], packages.fields, 'data', 'td', 'tr'));
           if(val['attributes'].fid) fids[val['attributes'].fid] = '';
         });
         
-        //get flagged items data
+        //set flagged items data
         var fids_ = []; for(a in fids) { fids_.push(a); }
         url_ = config.api.baseurl+'/flagged/fid/'+fids_.join(',');
-        asyncReq(url_, 'callback', get_flagged_by_fids);
+        asyncReq(url_, 'callback', set_flagged_by_fids);
 
         var tbl = "\n" + h + "\n" + items.join( "\n" );
         $( "<table/>", {
@@ -37,7 +37,7 @@
 
         //----- data.links -----
         var links = [];
-        links.push( getTblRow(data.links, link.fields, 'links', 'td', 'tr') );
+        links.push( makeTblRow(data.links, link.fields, 'links', 'td', 'tr') );
         var tbl = links.join( "\n" );
         $( "<div/>", {
            "id": "api-active-pager",
@@ -48,8 +48,8 @@
 
         //----- data.meta -----
         var stats = [];
-        var h = getTblRow('', meta.stats, 'meta', 'th', 'tr');
-        stats.push( getTblRow(data.meta, meta.stats, 'meta', 'td', 'tr') );
+        var h = makeTblRow('', meta.stats, 'meta', 'th', 'tr');
+        stats.push( makeTblRow(data.meta, meta.stats, 'meta', 'td', 'tr') );
         var tbl = "\n" + h + "\n" + stats.join( "\n" );
         $( "<table/>", {
            "class": "packages meta",
@@ -59,8 +59,8 @@
         //----- data.meta.search -----
         var stats = []; var f = [];
         for (a in data.meta.search) f.push(a);
-        var h = getTblRow('', f, 'meta', 'th', 'tr');
-        stats.push( getTblRow(data.meta.search, f, 'meta', 'td', 'tr') );
+        var h = makeTblRow('', f, 'meta', 'th', 'tr');
+        stats.push( makeTblRow(data.meta.search, f, 'meta', 'td', 'tr') );
         var tbl = "\n" + h + "\n" + stats.join( "\n" );
         $( "<table/>", {
            "class": "packages meta-search",
@@ -69,7 +69,7 @@
 
     };
 
-    get_flagged_by_fids = function(data) {
+    set_flagged_by_fids = function(data) {
         //----- data.data -----
         var fids = []; flagged.onpage = [];
         $.each( data.data, function( key, val ) {
@@ -85,7 +85,7 @@
       obj.title = 'Flagged: '+flagged.onpage[fid];
     }
     
-    get_categories = function(data) {
+    set_categories = function(data) {
         //----- data.data -----
         var items = [];
         items.push(makeElm('option', '', {}) );
@@ -121,12 +121,12 @@
         $( html ).appendTo( "body #search" );
     };
 
-    get_maintainer_names = function(data) {
+    set_maintainer_names = function(data) {
         //----- data.data -----
         var items = [];
         items.push(makeElm('option', '', {}) );
         $.each( data.data, function( key, val ) {
-            items.push( getTblRow(val['attributes'], ['name'], 'data', 'option', '') );
+            items.push( makeTblRow(val['attributes'], ['name'], 'data', 'option', '') );
         });
         var opt4 = (makeElm('select', items.join( "\n" ), {
           'name':'maintainer', 'data-placeholder':'Branch',
@@ -142,13 +142,13 @@
 
     query = (app.query) ? '&'+app.query : ''
     url = config.api.baseurl+''+app.resource+''+query;
-    asyncReq(url, 'callback', get_packages);
+    asyncReq(url, 'callback', set_packages);
 
     url=config.api.baseurl+'/categories';
-    asyncReq(url, 'callback', get_categories);
+    asyncReq(url, 'callback', set_categories);
 
     url=config.api.baseurl+'/maintainer/names';
-    asyncReq(url, 'callback', get_maintainer_names);
+    asyncReq(url, 'callback', set_maintainer_names);
 
 
 /*]]>*/
