@@ -22,6 +22,8 @@ packages.fields = ['name', 'version', 'url', 'license', 'branch',
                    'repo', 'arch', 'maintainer', 'build_time'];
 packages.class = 'packages';
 
+flagged = {};
+
 meta = {};
 meta.stats = ['count', 'total-pages', 'per-page', 'total-count',
               'elapsed_time', 'memory_usage'];
@@ -70,7 +72,9 @@ temp = {}
                 return makeElm( 'a', data[field], {'title':data['description'], 'href':url_} );
             }
             if('version' == field) {
-                return makeElm( 'a', data[field], {'title':'Flag this package out of date', 'href':''} );
+                var t_ = (data['fid']) ? 'Flagged: ' : 'Flag this package out of date';
+                var c_ = (data['fid']) ? 'version text-danger fid'+data['fid'] : 'version text-success';
+                return makeElm( 'a', data[field], {'title':t_, 'href':'', 'class': c_} );
             }
             if('url' == field) {
                 return makeElm( 'a', 'URL', {'title':'', 'href':data[field]} )
@@ -98,11 +102,11 @@ temp = {}
     };
 
     makePgn = function(data) {
-        links = data.links;
+        var links = data.links;
         var pgs = parseInt((/[\d]+$/i).exec(links.last));
         currPg = parseInt((/[\d]+$/i).exec(app.query));
         app.query = (app.query).split(/\&page.*/)[0];
-        pgr = $('#api-active-pager');
+        var pgr = $('#api-active-pager');
         setTimeout(function() {
             $(pgr).twbsPagination({
                 startPage: (currPg <= data.meta['total-pages']) ? currPg : 1,
@@ -161,7 +165,7 @@ temp = {}
 
     fmtDate = function(epoch, fmt) {
         fmt = fmt ? fmt : "ddd, mmm dS, yyyy, h:MM TT";
-        now = new Date();
+        var now = new Date();
         var mEpoch = parseInt(epoch);
         if(mEpoch < 10000000000) { mEpoch *= 1000; }
         now.setTime(mEpoch);

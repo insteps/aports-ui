@@ -33,33 +33,33 @@
 
     getPackage = function(data) {
         //----- data.data -----
-        var d = data.data[0]; var d_ = d['attributes']; var ln = '';
-        var name = d['attributes']['name'];
-        var version = d['attributes']['version'];
-        var branch = d['attributes']['branch'];
-        var repo = d['attributes']['repo'];
-        var arch = d['attributes']['arch'];
-        var items = [];
+        var d = data.data[0]; var d_ = d['attributes'];
+        var name = d_['name'];
+        var version = d_['version'];
+        var branch = d_['branch'];
+        var repo = d_['repo'];
+        var arch = d_['arch'];
+        var items = []; var ln = '';
         
         ln = 'http://git.alpinelinux.org/cgit/aports/tree';
         var gr = (makeElm('a', 'Git repository', {
           'href': ln+'/'+repo+'/'+name+'?h=master'
         }));
-        d['attributes']['git_repository'] = gr;
+        d_['git_repository'] = gr;
         
         ln = 'http://build.alpinelinux.org/buildlogs';
         var bl = (makeElm('a', 'Bluid log', {
           'href': ln+'/'+'build-'+branch+'-'+arch+'/'+repo+'/'+name+'/'+name+'-'+version+'.log'
         }));
-        d['attributes']['build_log'] = bl;
+        d_['build_log'] = bl;
         
         ln = 'http://pkgs.alpinelinux.org/contents';
         var ct = (makeElm('a', 'Contents of package', {
           'href': ln+'?branch='+branch+'&name='+name+'&arch='+arch+'&repo='+repo+''
         }));
-        d['attributes']['contents'] = ct;
+        d_['contents'] = ct;
         
-        $.each( d['attributes'], function( key, val ) {
+        $.each( d_, function( key, val ) {
             key_ = key;
             if('name' == key_) { key_ = 'Package' };
             if('url' == key_) { key_ = 'Project' };
@@ -68,7 +68,7 @@
             if('checksum' == key_) { key = '' };
             if('fid' == key_) { key = '' };
             if('commit' == key_) {
-                d['attributes']['commit'] = (makeElm('a', val, {
+                d_['commit'] = (makeElm('a', val, {
                   'href':'http://git.alpinelinux.org/cgit/aports/commit/?id='+val
                 }));
             };
@@ -76,7 +76,7 @@
             items.push('<tr>');
             if(key !== '') {
                 items.push(makeElm('th', titleCase(key_).replace(/\_/, ' '), {'class': 'text-nowrap'}) );
-                items.push(makeElm('td', fmtData(d['attributes'], key, 'data'), {}) );
+                items.push(makeElm('td', fmtData(d_, key, 'data'), {}) );
             }
             items.push('</tr>');
         });
@@ -102,6 +102,8 @@
     _getPackage(url);
 
 
+   
+	
 
 /*]]>*/
 

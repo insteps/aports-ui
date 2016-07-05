@@ -11,11 +11,18 @@
 
     get_packages = function(data) {
         //----- data.data -----
-        var items = [];
+        var items = []; var fids = [];
         var h = getTblRow('', packages.tblHdrs, 'data', 'th', 'tr');
         $.each( data.data, function( key, val ) {
-          items.push( getTblRow(val['attributes'], packages.fields, 'data', 'td', 'tr') );
+          items.push(getTblRow(val['attributes'], packages.fields, 'data', 'td', 'tr'));
+          if(val['attributes'].fid) fids[val['attributes'].fid] = '';
         });
+        
+        //get flagged items data
+        var fids_ = []; for(a in fids) { fids_.push(a); }
+        url_ = config.api.baseurl+'/flagged/fid/'+fids_.join(',');
+        asyncReq(url_, 'callback', get_flagged_by_fids);
+
         var tbl = "\n" + h + "\n" + items.join( "\n" );
         $( "<table/>", {
            "id": "packages",
@@ -24,6 +31,9 @@
            html: tbl
         }).appendTo( "body .container" );
         //setTimeout(function() { sortables_init(); }, 1600);
+        packages_ =  document.getElementById('packages');
+        packages_.onmouseover = packagesOver;
+        
 
         //----- data.links -----
         var links = [];
@@ -59,6 +69,22 @@
 
     };
 
+    get_flagged_by_fids = function(data) {
+        //----- data.data -----
+        var fids = []; flagged.onpage = [];
+        $.each( data.data, function( key, val ) {
+          if(val.id) flagged.onpage[val.id] = fmtDate(val['attributes'].created, "yyyy-mm-dd HH:MM:ss");
+        });
+    };
+    
+    packagesOver = function(e) {
+      e.preventDefault(); obj = e.target;
+      if(obj.tagName != 'A') return;
+      if( ! $(obj).hasClass('text-danger') ) return;
+      var fid = parseInt((/[\d]+$/i).exec(obj.className));
+      obj.title = 'Flagged: '+flagged.onpage[fid];
+    }
+    
     get_categories = function(data) {
         //----- data.data -----
         var items = [];
@@ -95,7 +121,7 @@
         $( html ).appendTo( "body #search" );
     };
 
-    get_maintainers = function(data) {
+    get_maintainer_names = function(data) {
         //----- data.data -----
         var items = [];
         items.push(makeElm('option', '', {}) );
@@ -122,8 +148,7 @@
     asyncReq(url, 'callback', get_categories);
 
     url=config.api.baseurl+'/maintainer/names';
-    asyncReq(url, 'callback', get_maintainers);
-
+    asyncReq(url, 'callback', get_maintainer_names);
 
 
 /*]]>*/
