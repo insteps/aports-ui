@@ -29,6 +29,13 @@
             }
             if('size' == field) { return humanBytes(data[field]) }
             if('installed_size' == field) { return humanBytes(data[field]) }
+            if('name' == field) {
+                var u_ = []; //['packages']
+                var v_ = { 'name':  data[field], 'branch': data['branch'],
+                           'arch': data['arch'], 'repo': data['repo'] };
+                var url_ = app.baseurl.replace(/packages/, 'package') + '?' + buildReq(u_, v_, packages.fields);
+                return makeElm( 'a', data[field], {'title':data['description'], 'href':url_} );
+            }
         }
         return data[field];
     };
@@ -37,6 +44,7 @@
         //----- data.data -----
         var d = data.data[0]; var d_ = d['attributes'];
         var name = d_['name'];
+        var origin = d_['origin'];
         var version = d_['version'];
         var branch = d_['branch'];
         var repo = d_['repo'];
@@ -78,7 +86,11 @@
             items.push('<tr>');
             if(key !== '') {
                 items.push(makeElm('th', titleCase(key_).replace(/\_/, ' '), {'class': 'text-nowrap'}) );
-                items.push(makeElm('td', fmtData(d_, key, 'data'), {}) );
+                if(key == 'name') {
+                  items.push(makeElm('td', name, {}) );
+                } else {
+                  items.push(makeElm('td', fmtData(d_, key, 'data'), {}) );
+                }
             }
             items.push('</tr>');
         });
@@ -89,9 +101,40 @@
            //"class": "table table-striped table-bordered table-condensed",
            html: tbl
         }).appendTo( "body .container" );
+
+        if(data) {
+            //set subpackages
+            var q_ = 'origin='+origin+'&branch='+branch+'&arch='+arch+'&repo='+repo+''
+            url = config.api.baseurl+''+app.resource+'&'+q_;
+            asyncReq(url, 'callback', setSubPackage);
+        }
+
     };
 
+    setSubPackage = function(data) {
+        var p = new Poly9.URLParser(window.location);
+        var q = p.getQueryarray();
+        var items = []; var O = data.data[0]['attributes']['origin'];
+        var h = makeTblRow('', ['Sub Packages '+'('+(data.meta.count-1)+')'], 'data', 'th', 'tr');
+        $.each( data.data, function( key, val ) {
+            if(val['attributes']['name'] !== q['name']) {
+              items.push(makeTblRow(val['attributes'], ['name'], 'data', 'td', 'tr'));
+            }
+        });
+        var tbl = "\n" + h + "\n" + items.join( "\n" );
+        $( "<table/>", {
+           "id": "subpackage",
+           "class": "packages",
+           //"class": "table table-striped table-bordered table-condensed",
+           html: tbl
+        }).appendTo( "body .container" );
+    }
 
+    setDepends = function(data) {
+      alert(data);
+        
+    }
+    
    _getPackage = function(url) {
         var p = new Poly9.URLParser(url);
         var q = p.getQueryarray();
@@ -105,7 +148,7 @@
 
 
    
-	
+
 
 /*]]>*/
 
