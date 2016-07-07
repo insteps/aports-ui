@@ -112,7 +112,7 @@
             var q_ = 'branch='+branch+'&arch='+arch+'';
             url = config.api.baseurl+'/packages/id/'+d.id+'/provides'+'&'+q_;
             asyncReq(url, 'callback', setProvides);
-			
+
             //set subpackages
             var q_ = 'origin='+origin+'&branch='+branch+'&arch='+arch+'&repo='+repo+'';
             url = config.api.baseurl+''+app.resource+'&'+q_;
@@ -125,7 +125,8 @@
         var p = new Poly9.URLParser(window.location);
         var q = p.getQueryarray();
         var items = []; var O = data.data[0]['attributes']['origin'];
-        var h = makeTblRow('', ['Required by '+'('+(data.meta.count)+')'], 'data', 'th', 'tr');
+        var pg = data.meta.count+'/'+data.meta['total-count'];
+        var h = makeTblRow('', ['Required by '+'('+pg+')'], 'data', 'th', 'tr');
         $.each( data.data, function( key, val ) {
             if(val['attributes']['name'] !== q['name']) {
               items.push(makeTblRow(val['attributes'], ['name'], 'data', 'td', 'tr'));
@@ -177,7 +178,7 @@
            html: tbl
         }).appendTo( "body .container" );
     }
-    
+
    _getPackage = function(url) {
         var p = new Poly9.URLParser(url);
         var q = p.getQueryarray();
