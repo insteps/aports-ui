@@ -107,8 +107,12 @@
             var q_ = 'branch='+branch+'&arch='+arch+'';
             url = config.api.baseurl+'/packages/id/'+d.id+'/depends'+'&'+q_;
             asyncReq(url, 'callback', setDepends);
-            //alert(url);
 
+            //required
+            var q_ = 'branch='+branch+'&arch='+arch+'';
+            url = config.api.baseurl+'/packages/id/'+d.id+'/provides'+'&'+q_;
+            asyncReq(url, 'callback', setProvides);
+			
             //set subpackages
             var q_ = 'origin='+origin+'&branch='+branch+'&arch='+arch+'&repo='+repo+'';
             url = config.api.baseurl+''+app.resource+'&'+q_;
@@ -116,6 +120,25 @@
         }
 
     };
+
+    setProvides = function(data) {
+        var p = new Poly9.URLParser(window.location);
+        var q = p.getQueryarray();
+        var items = []; var O = data.data[0]['attributes']['origin'];
+        var h = makeTblRow('', ['Required by '+'('+(data.meta.count)+')'], 'data', 'th', 'tr');
+        $.each( data.data, function( key, val ) {
+            if(val['attributes']['name'] !== q['name']) {
+              items.push(makeTblRow(val['attributes'], ['name'], 'data', 'td', 'tr'));
+            }
+        });
+        var tbl = "\n" + h + "\n" + items.join( "\n" );
+        $( "<table/>", {
+           "id": "subpackage",
+           "class": "packages",
+           //"class": "table table-striped table-bordered table-condensed",
+           html: tbl
+        }).appendTo( "body .container" );
+    }
 
     setSubPackage = function(data) {
         var p = new Poly9.URLParser(window.location);
@@ -167,7 +190,7 @@
     _getPackage(url);
 
 
-   
+
 
 
 /*]]>*/
