@@ -63,9 +63,10 @@
         }));
         d_['build_log'] = bl;
         
-        ln = 'http://pkgs.alpinelinux.org/contents';
+        //ln = 'http://pkgs.alpinelinux.org/contents';
+        ln = app.baseurl.replace(/package/, 'contents');
         var ct = (makeElm('a', 'Contents of package', {
-          'href': ln+'?branch='+branch+'&name='+name+'&arch='+arch+'&repo='+repo+''
+          'href': ln+'?name='+name+'&branch='+branch+'&repo='+repo+'&arch='+arch+''
         }));
         d_['contents'] = ct;
         

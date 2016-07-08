@@ -22,6 +22,10 @@ packages.fields = ['name', 'version', 'url', 'license', 'branch',
                    'repo', 'arch', 'maintainer', 'build_time'];
 packages.class = 'packages';
 
+contents = {};
+contents.tblHdrs = ['File', 'Package', 'Branch', 'Repository', 'Architecture'];
+contents.fields = ['file', 'package', 'branch', 'repo', 'arch'];
+contents.class = 'contents';
 flagged = {};
 
 meta = {};
@@ -104,7 +108,7 @@ temp = {}
     makePgn = function(data) {
         var links = data.links;
         var pgs = parseInt((/[\d]+$/i).exec(links.last));
-        currPg = parseInt((/[\d]+$/i).exec(app.query));
+        currPg = parseInt((/[\=\/]{1}([\d]+)$/i).exec(app.query)[1]);
         app.query = (app.query).split(/\&page.*/)[0];
         var pgr = $('#api-active-pager');
         setTimeout(function() {
