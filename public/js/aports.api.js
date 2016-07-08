@@ -108,7 +108,8 @@ temp = {}
     makePgn = function(data) {
         var links = data.links;
         var pgs = parseInt((/[\d]+$/i).exec(links.last));
-        currPg = parseInt((/[\=\/]{1}([\d]+)$/i).exec(app.query)[1]);
+        var currPg = (/[\=\/]{1}([\d]+)$/i).exec(app.query);
+        currPg = (currPg) ? parseInt(currPg[1]) : 1;
         app.query = (app.query).split(/\&page.*/)[0];
         var pgr = $('#api-active-pager');
         setTimeout(function() {
