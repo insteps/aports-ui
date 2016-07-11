@@ -26,7 +26,13 @@ contents = {};
 contents.tblHdrs = ['File', 'Package', 'Branch', 'Repository', 'Architecture'];
 contents.fields = ['file', 'package', 'branch', 'repo', 'arch'];
 contents.class = 'contents';
+
 flagged = {};
+flagged.tblHdrs = ['Origin', 'Version', 'New version', 'Branch', 'Repository',
+                   'Maintainer', 'Flag date', 'Message'];
+flagged.fields = ['origin', 'version', 'new_version',
+                  'branch', 'repo', 'maintainer', 'flag_date', 'message'];
+flagged.class = 'flagged';
 
 meta = {};
 meta.stats = ['count', 'total-pages', 'per-page', 'total-count',
@@ -34,7 +40,7 @@ meta.stats = ['count', 'total-pages', 'per-page', 'total-count',
 link = {};
 link.fields = ['self', 'first', 'next', 'last'];
 
-app = {}
+app = {};
 app.urlDef = config.api.baseurl+'/packages';
 app.resource = app.resDef = '/search/packages';
 app.url = (window.location).toString().split(/\?/)
@@ -43,12 +49,12 @@ if(app.url.length > 1) {
   app.res_ =  app.url[1].split(/\&/);
   app.resource = (app.url[1][0] == '/') ? app.res_[0] : app.resDef;
   if((app.url[1][0] == '/')) app.res_.shift();
-}
+};
 app.query = (app.res_ && app.res_.length > 0) ? ''+app.res_.join('&') : '';
 for (a in config.api.resources) {
   if(config.api.resources[a] == app.resource) { break; }
-}
-temp = {}
+};
+temp = {};
 
     asyncReq = function(url, callback, callback2) {
         var request = $.ajax({
@@ -63,7 +69,7 @@ temp = {}
             success: callback2
         });
         return request;
-    }
+    };
 
     fmtData = function(data, field, type) {
         if(data[field] == null) return '';
@@ -92,16 +98,16 @@ temp = {}
                 var url_ = app.baseurl + '?' + buildReq(u_, v_, packages.fields);
                 return makeElm( 'a', data[field], {'title':'', 'href':url_} )
             }
-        }
+        };
         if('meta' == type) {
-        }
+        };
         if('links' == type) {
             var text = field;
             //if ('last' == field) { text = '&gt;&gt;' }
             //if ('next' == field) { text = '&gt;' }
             //if ('first' == field) { text = '&lt;&lt;' }
             return '<a title="'+'" href="'+data[field]+'">'+text+'</a>'
-        }
+        };
         return data[field];
     };
 
@@ -125,7 +131,7 @@ temp = {}
                 }
             });
         }, 600);
-    }
+    };
 
     makeTblRow = function(data, fields, cls, elm, elmWrap) {
        var items = [];
@@ -136,7 +142,7 @@ temp = {}
                val = fields[n];
            }
            if(elm) items.push(makeElm(elm, val, {}));
-       }
+       };
        var val = "\n"+items.join( "\n" );
        if(elmWrap != '') return makeElm( elmWrap, val, {'class':cls} );
        return val;
@@ -166,7 +172,7 @@ temp = {}
         var req_ = items.join("&");
         url_ = (url_) ? url_+'&' : '';
         return url_+req_;
-    }
+    };
 
     fmtDate = function(epoch, fmt) {
         fmt = fmt ? fmt : "ddd, mmm dS, yyyy, h:MM TT";
@@ -179,7 +185,7 @@ temp = {}
    
     titleCase = function(string) {
         if(string) return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+    };
 
     // converted function cntrl:humanBytes(bytes) found here
     // https://github.com/clandmeter/aports-turbo/blob/master/controller.lua
@@ -190,7 +196,7 @@ temp = {}
         var result = bytes/Math.pow(1024, factor);
         var r = Math.floor(result * mult + 0.5) / mult;
         return r.toString()+' ' + size[factor];
-    }
+    };
 
 
 /*]]>*/
